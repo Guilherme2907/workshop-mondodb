@@ -5,6 +5,7 @@
  */
 package com.guilherme.workshopmongo.resources;
 
+import com.guilherme.workshopmongo.domain.Post;
 import com.guilherme.workshopmongo.domain.User;
 import com.guilherme.workshopmongo.service.UserService;
 import java.net.URI;
@@ -43,23 +44,29 @@ public class UserResource {
     public ResponseEntity<User> findById(@PathVariable("id") String id) {
         return ResponseEntity.ok(userService.findById(id));
     }
-    
+
+    @GetMapping("/{id}/posts")
+    public ResponseEntity<List<Post>> findPosts(@PathVariable("id") String id) {
+        User user = userService.findById(id);
+        return ResponseEntity.ok(user.getPosts());
+    }
+
     @PostMapping
-    public ResponseEntity<Void> findById(@RequestBody User user) {
+    public ResponseEntity<Void> save(@RequestBody User user) {
         User u = userService.save(user);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(u.getId()).toUri();
         return ResponseEntity.created(uri).build();
     }
-    
+
     @DeleteMapping("/{id}")
     public ResponseEntity<User> deleById(@PathVariable("id") String id) {
         userService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
-    
+
     @PutMapping("/{id}")
-    public ResponseEntity<Void> findById(@RequestBody User user,@PathVariable String id) {
-        userService.update(user,id);
+    public ResponseEntity<Void> update(@RequestBody User user, @PathVariable String id) {
+        userService.update(user, id);
         return ResponseEntity.noContent().build();
     }
 }
