@@ -46,9 +46,12 @@ public class Inicialization implements CommandLineRunner {
         sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
 
         Post post1 = new Post(null, sdf.parse("21/01/2020"), "Partiu EUA", "Orlando...", new AuthorDTO(guilherme));
-        Post post2 = new Post(null, sdf.parse("21/01/2018"), "Partiu Viagem", "Sao Paulo", new AuthorDTO(julia));
+        Post post2 = new Post(null, sdf.parse("21/01/2018"), "Partiu Viagem", "Sao Paulo", new AuthorDTO(guilherme));
 
         postRepository.saveAll(Arrays.asList(post1, post2));
+
+        guilherme.getPosts().addAll(Arrays.asList(post1, post2));
+        userRepository.save(guilherme);
 
     }
 }
