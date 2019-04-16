@@ -7,6 +7,7 @@ package com.guilherme.workshopmongo.config;
 
 import com.guilherme.workshopmongo.domain.Post;
 import com.guilherme.workshopmongo.domain.User;
+import com.guilherme.workshopmongo.domain.dto.AuthorDTO;
 import com.guilherme.workshopmongo.repository.PostRepository;
 import com.guilherme.workshopmongo.repository.UserRepository;
 import java.text.SimpleDateFormat;
@@ -25,7 +26,7 @@ public class Inicialization implements CommandLineRunner {
 
     @Autowired
     private UserRepository userRepository;
-    
+
     @Autowired
     private PostRepository postRepository;
 
@@ -38,14 +39,16 @@ public class Inicialization implements CommandLineRunner {
         User guilherme = new User(null, "Guilherme", "guilherme@gmail.com");
         User julia = new User(null, "Julia Green", "julia@gmail.com");
         User carla = new User(null, "Carla Grey", "carla@gmail.com");
-        
+
+        userRepository.saveAll(Arrays.asList(guilherme, julia, carla));
+
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
-        
-        Post post1 = new Post(null, sdf.parse("21/01/2020"), "Partiu EUA", "Orlando...", guilherme);
-        Post post2 = new Post(null, sdf.parse("21/01/2018"), "Partiu Viagem","Sao Paulo", julia);
-        
+
+        Post post1 = new Post(null, sdf.parse("21/01/2020"), "Partiu EUA", "Orlando...", new AuthorDTO(guilherme));
+        Post post2 = new Post(null, sdf.parse("21/01/2018"), "Partiu Viagem", "Sao Paulo", new AuthorDTO(julia));
+
         postRepository.saveAll(Arrays.asList(post1, post2));
-        userRepository.saveAll(Arrays.asList(guilherme, julia, carla));
+
     }
 }
