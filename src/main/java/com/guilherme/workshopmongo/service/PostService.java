@@ -9,6 +9,7 @@ import com.guilherme.workshopmongo.service.util.Url;
 import com.guilherme.workshopmongo.domain.Post;
 import com.guilherme.workshopmongo.repository.PostRepository;
 import com.guilherme.workshopmongo.service.exception.ObjectNotFoundException;
+import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,5 +31,13 @@ public class PostService {
     public List<Post> findByTitle(String text) {
         text = Url.decodeParam(text);
         return postRepository.findByTitleContainingIgnoringCase(text);
+    }
+
+    public List<Post> fullSearch(String text, String minDate, String maxDate) {
+        text = Url.decodeParam(text);
+        Date min = Url.convertToDate(minDate, new Date(0L));
+        Date max = Url.convertToDate(maxDate, new Date(System.currentTimeMillis() + 86400000));
+
+        return postRepository.fullSearch(text, min, max);
     }
 }
