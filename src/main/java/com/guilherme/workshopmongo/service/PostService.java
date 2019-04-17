@@ -5,9 +5,11 @@
  */
 package com.guilherme.workshopmongo.service;
 
+import com.guilherme.workshopmongo.service.util.Url;
 import com.guilherme.workshopmongo.domain.Post;
 import com.guilherme.workshopmongo.repository.PostRepository;
 import com.guilherme.workshopmongo.service.exception.ObjectNotFoundException;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,8 +23,12 @@ public class PostService {
     @Autowired
     private PostRepository postRepository;
 
-
     public Post findById(String id) {
         return postRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado para o id: " + id));
+    }
+
+    public List<Post> findByTitle(String text) {
+        text = Url.decodeParam(text);
+        return postRepository.findByTitleContainingIgnoringCase(text);
     }
 }

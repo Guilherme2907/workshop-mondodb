@@ -8,14 +8,13 @@ package com.guilherme.workshopmongo.resources;
 import com.guilherme.workshopmongo.domain.Post;
 import com.guilherme.workshopmongo.domain.User;
 import com.guilherme.workshopmongo.service.PostService;
-import com.guilherme.workshopmongo.service.UserService;
-import java.net.URI;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -34,4 +33,8 @@ public class PostResource {
         return ResponseEntity.ok(postService.findById(id));
     }
 
+    @GetMapping("/searchTitle")
+    public ResponseEntity<List<Post>> findByTitle(@RequestParam(name = "title", defaultValue = "") String text) {
+        return ResponseEntity.ok(postService.findByTitle(text));
+    }
 }
